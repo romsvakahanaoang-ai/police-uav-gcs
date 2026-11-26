@@ -1067,9 +1067,9 @@ function updateTileState(drawn) {
   var el = document.getElementById('tileState');
   var elCmd = document.getElementById('tileStateCmd');
   if (T.loading > 0) { el.textContent = '底图加载中 ' + T.loaded + '/' + (T.loaded + T.loading + T.fail); el.className = 'tile-state'; }
-  else if (T.fail > 0 && drawn === 0) { el.textContent = '底图加载失败（检查网络），已降级网格底图'; el.className = 'tile-state err'; }
-  else if (T.fail > 0) { el.textContent = '部分瓦片加载失败（' + T.fail + '）'; el.className = 'tile-state err'; }
+  /* 只要本帧画出了瓦片就显示正常态：早期的零星失败不再残留成红色告警，避免线上首屏误报 */
   else if (drawn > 0) { el.textContent = TILE_SOURCES[T.source].label + '已加载 ' + drawn + ' 瓦片'; el.className = 'tile-state ok'; }
+  else if (T.fail > 0) { el.textContent = '底图加载失败（检查网络），已降级网格底图'; el.className = 'tile-state err'; }
   elCmd.textContent = el.textContent;
   elCmd.className = el.className;
 }
